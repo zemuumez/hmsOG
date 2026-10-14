@@ -1,0 +1,16 @@
+import { ActionLink, Card, Container, PageHeading } from "@/components/ui";
+import { DoctorGrid, ServiceGrid } from "@/components/catalog";
+import { getWebsite } from "@/lib/website";
+
+export default async function Home() {
+  const { data } = await getWebsite();
+  return <>
+    <section className="border-b border-slate-200 bg-teal-50/60 py-16 sm:py-24"><Container className="grid items-center gap-12 lg:grid-cols-[1.4fr_1fr]">
+      <div><PageHeading eyebrow="Here for your health" title={data.content.home_page_title || "Your next step to better care."} description={data.content.home_page_description || "Explore our services, find a doctor, and plan your visit to the hospital."} /><div className="mt-8 flex flex-wrap gap-3"><ActionLink href="/appointment">Book an appointment <span aria-hidden="true">↗</span></ActionLink><ActionLink href="/our-doctors" secondary>Find a doctor</ActionLink></div></div>
+      <Card className="relative border-teal-100 p-8 sm:p-10"><div aria-hidden="true" className="mb-8 flex size-16 items-center justify-center rounded-2xl bg-teal-800 text-4xl text-white">+</div><p className="text-xs font-bold uppercase tracking-widest text-teal-800">Plan your visit</p><h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950">A little preparation.<br />A simpler visit.</h2><ol className="mt-8 space-y-5">{["Explore our services", "Choose your doctor", "Book a convenient time"].map((step, i) => <li key={step} className="flex items-center gap-4 text-sm"><span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-teal-50 font-semibold text-teal-800">{i + 1}</span>{step}</li>)}</ol><div className="mt-8 border-t border-slate-100 pt-6"><ActionLink href="/working-hours" secondary className="w-full">View working hours</ActionLink></div></Card>
+    </Container></section>
+    <section className="py-16"><Container><div className="mb-8 flex flex-wrap items-end justify-between gap-4"><div><p className="mb-3 text-xs font-bold uppercase tracking-widest text-teal-800">Our services</p><h2 className="text-3xl font-semibold tracking-tight text-slate-950">Care for your needs</h2></div><ActionLink href="/our-services" secondary>All services</ActionLink></div><ServiceGrid services={data.services.slice(0, 6)} /></Container></section>
+    <section className="border-y border-slate-200 bg-white py-16"><Container><div className="mb-8 flex flex-wrap items-end justify-between gap-4"><div><p className="mb-3 text-xs font-bold uppercase tracking-widest text-teal-800">Our people</p><h2 className="text-3xl font-semibold tracking-tight text-slate-950">Meet your care team</h2></div><ActionLink href="/our-doctors" secondary>All doctors</ActionLink></div><DoctorGrid doctors={data.doctors.slice(0, 3)} /></Container></section>
+    <section className="py-16"><Container><div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-teal-900 p-8 text-white sm:flex-row sm:items-center sm:p-12"><div><h2 className="text-3xl font-semibold tracking-tight">Let’s plan your next visit.</h2><p className="mt-3 text-teal-100">Our team can help you find the right service.</p></div><ActionLink href="/contact-us" secondary>Contact the hospital</ActionLink></div></Container></section>
+  </>;
+}

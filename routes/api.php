@@ -37,6 +37,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/public/website', [\App\Http\Controllers\API\PublicWebsiteController::class, 'index'])
+    ->middleware('throttle:60,1');
+
 Route::post('/patient-register', [RegistrationController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::post('/forgot-password',
